@@ -1,8 +1,10 @@
 package services
 
 import (
-	"github.com/google/gopacket/pcap"
 	"log"
+
+	"github.com/google/gopacket"
+	"github.com/google/gopacket/pcap"
 )
 
 func ListAllDevs() {
@@ -16,11 +18,19 @@ func ListAllDevs() {
 }
 
 func OpenLiveToAny() *pcap.Handle {
-	handle, err := pcap.OpenLive("any", 65535, true, pcap.BlockForever)
+	handle, err := pcap.OpenLive("eth0", 65535, true, pcap.BlockForever)
 
 	if err != nil {
 		panic(err)
 	}
 
 	return handle
+}
+
+func IteratePackets(h *pcap.Handle) {
+	packetSource := gopacket.NewPacketSource(h, h.LinkType())
+
+	for packet := range packetSource.Packets() {
+		log.Println(packet)
+	}
 }

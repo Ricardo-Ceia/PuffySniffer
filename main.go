@@ -1,6 +1,8 @@
 package main
 
 import (
+	"log"
+
 	"fyne.io/fyne/v2"
 	"fyne.io/fyne/v2/app"
 	"fyne.io/fyne/v2/widget"
@@ -8,8 +10,12 @@ import (
 )
 
 func main() {
-
-	services.ListAllDevs()
+	log.Println("test")
+	//services.ListAllDevs()
+	h := services.OpenLiveToAny()
+	go func() {
+		services.IteratePackets(h)
+	}()
 	myApp := app.New()
 	myWindow := myApp.NewWindow("PuppySniffer")
 	myWindow.Resize(fyne.NewSize(1280, 720))
