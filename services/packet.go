@@ -14,3 +14,13 @@ func ListAllDevs() {
 		log.Println(interfaces[i])
 	}
 }
+
+func OpenLiveToAny() *pcap.Handle {
+	handle, err := pcap.OpenLive("any", 65535, true, pcap.BlockForever)
+
+	if err != nil {
+		panic(err)
+	}
+
+	return handle
+}
